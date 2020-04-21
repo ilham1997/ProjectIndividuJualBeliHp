@@ -4,6 +4,8 @@ import android.content.Context;
 import android.widget.BaseAdapter;
 import android.widget.Filterable;
 
+import com.example.jualbelihp.model.Handphone;
+
 import java.util.List;
 import java.util.logging.Handler;
 
