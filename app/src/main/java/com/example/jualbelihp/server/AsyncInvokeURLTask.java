@@ -2,9 +2,7 @@ package com.example.jualbelihp.server;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.net.http.HttpResponseCache;
 import android.os.AsyncTask;
-import android.text.format.Time;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -19,69 +17,72 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpCookie;
 import java.util.ArrayList;
 
 public class AsyncInvokeURLTask extends AsyncTask<Void, Void, String> {
     public String mNoteItWebUrl = "www.smartneasy.com";
     private ArrayList<NameValuePair> mParams;
-    private OnPostExecuteListener onPostExecuteListener = null;
+    private OnPostExecuteListener mPostExecuteListener = null;
     private ProgressDialog dialog;
-    public boolean showdialog = false;
-    public String message = "Proses Data";
-    public String url_server = "http://localhost/xphone/";
+    public boolean showdialog =false;
+    public String message ="Proses Data";
+    //Harus diganti dengan IP Server yang digunakan
+    public String url_server ="http://192.168.43.59/pemrograman-mobile/";
     public Context applicationContext;
     public static interface OnPostExecuteListener{
         void onPostExecute(String result);
     }
-    public AsyncInvokeURLTask(
-        ArrayList<NameValuePair> nameValuePairs;
-        OnPostExecuteListener postExecuteListener) throws Exception{
+    public AsyncInvokeURLTask(ArrayList<NameValuePair> nameValuePairs, OnPostExecuteListener postExecuteListener) throws Exception {
         mParams = nameValuePairs;
-        onPostExecuteListener = PostExecuteListener;
-        if (onPostExecuteListener == null)
-            throw new Exception("Params cannot be null.");
+        mPostExecuteListener = postExecuteListener;
+        if (mPostExecuteListener == null)
+            throw new Exception("Param cannot be null.");
     }
     @Override
-    public void onPreExecute(){
+    public void onPreExecute() {
         if (showdialog)
-            this.dialog = ProgressDialog.show(applicationContext, message, "Silakan Menunggu...", true);
+            this.dialog =
+                    ProgressDialog.show(applicationContext,message, "Silakan Menunggu...",
+                            true);
     }
     @Override
-    public String doInBackground(Void... params){
+    public void onPostExecute(String result) {
+        if (mPostExecuteListener != null){
+            try {
+                //JSONObject json = new JSONObject(result);
+                if (showdialog)this.dialog.dismiss();
+                mPostExecuteListener.onPostExecute(result);
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+    @Override
+    public String doInBackground(Void... params) {
         String result = "timeout";
-        HttpClient httpClient = new DefaultHttpClient();
-        HttpPost httppost =  new HttpPost(url_server+mNoteItWebUrl);
-        try {
+// Create a new HttpClient and Post Header
+        HttpClient httpclient = new DefaultHttpClient();
+        HttpPost httppost = new HttpPost(url_server+mNoteItWebUrl);
+        try {// Add parameters
             httppost.setEntity(new UrlEncodedFormEntity(mParams));
-            HttpResponse response = httpClient.execute(httppost);
+// Execute HTTP Post Request
+            HttpResponse response = httpclient.execute(httppost);
             HttpEntity entity = response.getEntity();
             if (entity != null){
                 InputStream inStream = entity.getContent();
                 result = convertStreamToString(inStream);
             }
-
-        }catch (ClientProtocolException e){
+        } catch (ClientProtocolException e) {
             e.printStackTrace();
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return result;
     }
-    @Override
-    public void onPostExecute(String result){
-        if (onPostExecuteListener != null){
-            try{
-                if(showdialog) this.dialog.dismiss();
-                onPostExecuteListener.onPostExecute(result);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-        }
-    }
-    private static String convertStreamToString(InputStream is) {
+
+    private static String convertStreamToString(InputStream is){
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder();
         String line = null;
@@ -101,6 +102,3 @@ public class AsyncInvokeURLTask extends AsyncTask<Void, Void, String> {
         return sb.toString();
     }
 }
-
-
-
