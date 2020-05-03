@@ -1,4 +1,4 @@
-package com.example.jualbelihp;
+package com.ilham.jualbelihp;
 import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
@@ -16,13 +16,16 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuItemCompat;
-import com.example.jualbelihp.adapter.ListAdapterHandphone;
-import com.example.jualbelihp.model.Handphone;
-import com.example.jualbelihp.server.AsyncInvokeURLTask;
+
+import com.ilham.jualbelihp.adapter.ListAdapterHandphone;
+import com.ilham.jualbelihp.model.Handphone;
+import com.ilham.jualbelihp.server.AsyncInvokeURLTask;
 
 import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,8 +33,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
+public class MainActivity<refresh> extends AppCompatActivity implements SearchView.OnQueryTextListener {
     private static final String TAG = "MainActivity";
+    public static final String urlDelete = "delete_phone.php";
     private ListView listView;
     private ActionMode actionMode;
     private ActionMode.Callback amCallback;
@@ -42,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         listView = (ListView) findViewById(R.id.listview_main);
         amCallback = new ActionMode.Callback() {
             @Override
@@ -84,12 +89,11 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Delete " + selectedList.getNama() + " ?");
         builder.setTitle("Delete");
-        builder.setPositiveButton("Yes", new
-                DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        listhp.remove(listhp.indexOf(selectedList));
-                        Toast.makeText(getApplicationContext(), "deleted",
-                                Toast.LENGTH_SHORT).show();
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                //listhp.remove(listhp.indexOf(selectedList));
+                deleteData();
+                Toast.makeText(getApplicationContext(), "deleted", Toast.LENGTH_SHORT).show();
                     }
                 });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -152,8 +156,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         }
     }
     private void populateListView() {
-        adapter = new ListAdapterHandphone(getApplicationContext(),
-                this.listhp);
+        adapter = new ListAdapterHandphone(getApplicationContext(), this.listhp);
         listView.setAdapter(adapter);
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -206,30 +209,35 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 }
     public void deleteData() {
         try {
-            ArrayList<NameValuePair> nameValuePairs = new
-                    ArrayList<NameValuePair>(0);
+            ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(0);
+            nameValuePairs.add(new BasicNameValuePair("id", String.valueOf(selectedList.getId())));
             AsyncInvokeURLTask task = new AsyncInvokeURLTask(nameValuePairs, new AsyncInvokeURLTask.OnPostExecuteListener() {
                 @Override
                 public void onPostExecute(String result) {
-// TODO Auto-generated method stub
                     Log.d("TAG", "Login:" + result);
                     if (result.equals("timeout") ||result.trim().equalsIgnoreCase("Tidak dapat Terkoneksi ke Data Base")) {
                         Toast.makeText(getBaseContext(), "Tidak Dapat Terkoneksi dengn Server", Toast.LENGTH_SHORT).show();
                     } else {
                         processResponse(result);
                         populateListView();
+                        goToMainActivity();
                     }
                 }
         });
         task.showdialog = true;
         task.message = "Load Data HP Harap Tunggu..";
         task.applicationContext = MainActivity.this;
-        task.mNoteItWebUrl = "/select_all.php";
+        task.mNoteItWebUrl = urlDelete;
         task.execute();
     } catch (Exception e) {
         e.printStackTrace();
         }
         }
+    private void goToMainActivity() {
+        Intent in = new Intent(getApplicationContext(), MainActivity.class);
+        in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(in);
+    }
 @Override
 public boolean onQueryTextChange(String newText) {
         adapter.getFilter().filter(newText);

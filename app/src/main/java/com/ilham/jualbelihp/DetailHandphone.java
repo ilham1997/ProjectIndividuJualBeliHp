@@ -1,4 +1,4 @@
-package com.example.jualbelihp;
+package com.ilham.jualbelihp;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,8 +12,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.jualbelihp.model.Handphone;
-import com.example.jualbelihp.server.AsyncInvokeURLTask;
+import com.ilham.jualbelihp.model.Handphone;
+import com.ilham.jualbelihp.server.AsyncInvokeURLTask;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -70,7 +70,7 @@ public class DetailHandphone extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
     private void goToMainActivity(){
-        Intent in = new Intent(getApplicationContext(),MainActivity.class);
+        Intent in = new Intent(getApplicationContext(), MainActivity.class);
         in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(in);
     }

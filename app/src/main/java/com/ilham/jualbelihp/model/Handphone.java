@@ -1,4 +1,4 @@
-package com.example.jualbelihp.model;
+package com.ilham.jualbelihp.model;
 
 public class Handphone {
     private Integer id;

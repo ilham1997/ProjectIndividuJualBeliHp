@@ -1,4 +1,4 @@
-package com.example.jualbelihp;
+package com.ilham.jualbelihp;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,8 +8,8 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.jualbelihp.model.Handphone;
-import com.example.jualbelihp.server.AsyncInvokeURLTask;
+import com.ilham.jualbelihp.model.Handphone;
+import com.ilham.jualbelihp.server.AsyncInvokeURLTask;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -93,7 +93,7 @@ public class FormHandphone extends AppCompatActivity {
             task.showdialog = true;
             task.message = "Proses Submit Data Harap Tunggu..";
             task.applicationContext = FormHandphone.this;
-            task.url_server = "urlSubmit";
+            task.mNoteItWebUrl = urlSubmit;
             task.execute();
         } catch (Exception e) {
             e.printStackTrace();

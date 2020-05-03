@@ -1,4 +1,4 @@
-package com.example.jualbelihp.adapter;
+package com.ilham.jualbelihp.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,8 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Filter;
-import com.example.jualbelihp.R;
-import com.example.jualbelihp.model.Handphone;
+import com.ilham.jualbelihp.R;
+import com.ilham.jualbelihp.model.Handphone;
 
 import java.util.ArrayList;
 import java.util.List;

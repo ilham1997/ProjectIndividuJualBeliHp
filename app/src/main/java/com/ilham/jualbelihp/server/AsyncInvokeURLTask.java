@@ -1,4 +1,4 @@
-package com.example.jualbelihp.server;
+package com.ilham.jualbelihp.server;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -20,7 +20,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class AsyncInvokeURLTask extends AsyncTask<Void, Void, String> {
-    public String mNoteItWebUrl = "www.smartneasy.com";
+    public String mNoteItWebUrl = "www.siakad-altie.com";
     private ArrayList<NameValuePair> mParams;
     private OnPostExecuteListener mPostExecuteListener = null;
     private ProgressDialog dialog;
@@ -80,6 +80,7 @@ public class AsyncInvokeURLTask extends AsyncTask<Void, Void, String> {
             e.printStackTrace();
         }
         return result;
+
     }
 
     private static String convertStreamToString(InputStream is){
