@@ -28,6 +28,7 @@ public class AsyncInvokeURLTask extends AsyncTask<Void, Void, String> {
     public String message ="Proses Data";
     //Harus diganti dengan IP Server yang digunakan
     public String url_server ="https://milhamsutrisna.000webhostapp.com/xphone/";
+    //public String url_server ="http://192.168.43.59/xphone/";
     public Context applicationContext;
     public static interface OnPostExecuteListener{
         void onPostExecute(String result);
