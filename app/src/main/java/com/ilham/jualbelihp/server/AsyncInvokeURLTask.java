@@ -20,7 +20,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class AsyncInvokeURLTask extends AsyncTask<Void, Void, String> {
-    public String mNoteItWebUrl = "www.ilhamsutrisna.com";
+    public String mNoteItWebUrl = "www.milhamsutrisna.com";
     private ArrayList<NameValuePair> mParams;
     private OnPostExecuteListener mPostExecuteListener = null;
     private ProgressDialog dialog;
